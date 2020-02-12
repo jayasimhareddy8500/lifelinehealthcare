@@ -12,8 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.lifelinehealthcare.constant.AppConstant;
+import com.lifelinehealthcare.dto.ResponseDto;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,4 +44,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, headers, HttpStatus.OK);
 	}
 
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ResponseDto> userNotFoundException(UserNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.USER_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+
+	@ExceptionHandler(InvalidBookingStatusException.class)
+	public ResponseEntity<ResponseDto> invalidBookingStatusException(InvalidBookingStatusException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.INVALID_BOOKING_STATUS_TYPE);
+		errorDto.setStatusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
 }
