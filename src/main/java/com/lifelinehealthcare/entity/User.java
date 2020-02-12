@@ -1,12 +1,15 @@
 package com.lifelinehealthcare.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import com.lifelinehealthcare.common.LifeLineHealthEnum.Role;
 
@@ -27,4 +30,7 @@ public class User {
 	private String emailAddress;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "user")
+    private UserDetail userDetail;
 }

@@ -17,7 +17,7 @@ public class LifeLineHealthEnum {
 	 * @author Amala
 	 * @since 11-02-2020
 	 */
-	public enum BookinStatus {
+	public enum BookingStatus {
 		PENDING, BOOKED;
 
 	}
