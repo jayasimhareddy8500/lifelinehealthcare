@@ -47,7 +47,7 @@ public class LoginServiceImplTest {
 
 		LoginResponseDto authenticateCustomer = loginServiceImpl.authenticateUser(loginRequestDto);
 
-		assertEquals(customer.getName(), "amala");
+		assertEquals("amala", authenticateCustomer.getName());
 
 	}
 
