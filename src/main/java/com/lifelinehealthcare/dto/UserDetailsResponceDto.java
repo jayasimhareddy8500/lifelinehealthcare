@@ -14,7 +14,5 @@ public class UserDetailsResponceDto extends ResponseDto {
 	private Double yearsOfExperience;
 	private String category;
 	private String feedBack;
-
-	
 	List<AvilableSlotDto> avilableslot;
 }

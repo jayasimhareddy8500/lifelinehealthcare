@@ -15,5 +15,8 @@ public interface UserSlotRepository extends JpaRepository<UserSlot, Integer> {
 
 	List<UserSlot> findAllByStatus(BookingStatus bookingStatus);
 
+	List<UserSlot> findAllByUserAndStatus(User user, BookingStatus bookingStatus);
+
+	
 	List<UserSlot> findByUserAndSlotDateAndSlotRange(User user, LocalDate slotDate, String slotRange);
 }

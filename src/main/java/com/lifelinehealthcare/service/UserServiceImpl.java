@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lifelinehealthcare.common.LifeLineHealthEnum.BookingStatus;
 import com.lifelinehealthcare.constant.AppConstant;
 import com.lifelinehealthcare.dto.AvilableSlotDto;
 import com.lifelinehealthcare.dto.DoctorDto;
@@ -42,46 +43,26 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetailsResponceDto getUserDetailsById(Integer userId) throws UserNotFoundException {
-
+		UserDetailsResponceDto userDetailsResponceDto= new UserDetailsResponceDto();
 		Optional<User> user = userRepository.findById(userId);
-
 		if (!user.isPresent()) {
 			throw new UserNotFoundException(AppConstant.USER_NOT_FOUND);
 		}
-
-		Optional<UserDetail> userDetails = userDetailRepository.findByUser(user.get());
-
-		Optional<UserSlot> slotdetails = userSlotRepository.findById(userId);
-
-		Optional<DoctorFeedback> doctorFeedBack = doctorFeedbackRepository.findById(userId);
-
-		UserDetailsResponceDto UserDetailsResponceDto = new UserDetailsResponceDto();
-		UserDetailsResponceDto.setUserId(user.get().getUserId());
-
-		UserDetailsResponceDto.setName(user.get().getName());
-
-		UserDetailsResponceDto.setEducationQualification(userDetails.get().getEducationQualification());
-		UserDetailsResponceDto.setCategory(user.get().getCategory());
-
-		UserDetailsResponceDto.setYearsOfExperience(userDetails.get().getYearsOfExperience());
-		UserDetailsResponceDto.setFeedBack(doctorFeedBack.get().getFeedBack());
-
-		AvilableSlotDto avilableSlotDto = new AvilableSlotDto();
-
-		avilableSlotDto.setUserSlotId(slotdetails.get().getUserSlotId());
-
-		avilableSlotDto.setSlotTimeFrom(slotdetails.get().getSlotTimeFrom());
-		avilableSlotDto.setSlotTimeTo(slotdetails.get().getSlotTimeTo());
-
-		avilableSlotDto.setSlotDate(slotdetails.get().getSlotDate());
-		avilableSlotDto.setHospitalDetail(slotdetails.get().getHospitalDetail());
-
-		List<AvilableSlotDto> availableSlotList = new ArrayList<AvilableSlotDto>();
-		availableSlotList.add(avilableSlotDto);
-
-		UserDetailsResponceDto.setAvilableslot(availableSlotList);
-
-		return UserDetailsResponceDto;
+		userDetailsResponceDto.setUserId(user.get().getUserId());
+		userDetailsResponceDto.setName(user.get().getName());
+		
+		Optional<UserDetail> userDetail = userDetailRepository.findByUser(user.get());
+		if(!userDetail.isPresent()) {
+			throw new UserNotFoundException(AppConstant.USER_NOT_FOUND);
+		}
+		
+		BeanUtils.copyProperties(userDetail, userDetailsResponceDto);
+		
+		List<UserSlot> userSlots = userSlotRepository.findAllByUserAndStatus(user.get(), BookingStatus.AVAILABLE);
+		List<AvilableSlotDto> availableSlots = userSlots.stream().map(userSlot ->convertToAvaialbleSlot(userSlot))
+				.collect(Collectors.toList());
+		userDetailsResponceDto.setAvilableslot(availableSlots);
+		return userDetailsResponceDto;
 	}
 
 	@Override
@@ -90,6 +71,12 @@ public class UserServiceImpl implements UserService {
 		List<User> users = userRepository.getUsersBySearchValue(searchRequestDto.getDoctorName(),
 				searchRequestDto.getCategory());
 		return users.stream().map(this::convertUserToDoctortDto).collect(Collectors.toList());
+	}
+	
+	private AvilableSlotDto convertToAvaialbleSlot(UserSlot userSlot) {
+		AvilableSlotDto avilableSlotDto = new AvilableSlotDto();
+		BeanUtils.copyProperties(userSlot, avilableSlotDto);
+		return avilableSlotDto;
 	}
 
 	private DoctorDto convertUserToDoctortDto(User user) {
