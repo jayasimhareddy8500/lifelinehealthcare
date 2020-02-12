@@ -1,0 +1,13 @@
+package com.lifelinehealthcare;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class LifelinehealthcareApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(LifelinehealthcareApplication.class, args);
+	}
+
+}
