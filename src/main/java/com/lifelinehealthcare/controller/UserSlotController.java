@@ -112,7 +112,7 @@ public class UserSlotController {
 		userSlotService.confirmBookingSlot(userId, slotId, requestDto);
 		ResponseDto responseDto = new ResponseDto();
 		responseDto.setStatusCode(HttpStatus.OK.value());
-		responseDto.setMessage(AppConstant.SUCCESS_MESSAGE);
+		responseDto.setMessage(AppConstant.SLOT_BOOKED_SCCUESS_MESSAGE);
 		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 }

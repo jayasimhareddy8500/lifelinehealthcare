@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,22 +43,19 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/{userId}/users")
+	@GetMapping("/{userId}")
 	public ResponseEntity<UserDetailsResponceDto> getUserDetailsById(@PathVariable Integer userId)
 			throws UserNotFoundException {
 		log.info("Get the userdetails ..starting getUserDetailsById() method ,inside UserController...");
 
 		UserDetailsResponceDto response = userService.getUserDetailsById(userId);
 
-		UserDetailsResponceDto userDetailsResponceDto = new UserDetailsResponceDto();
+		response.setMessage(AppConstant.SUCCESS_MESSAGE);
+		response.setStatusCode(HttpStatus.OK.value());
 
-		userDetailsResponceDto.setMessage(AppConstant.SUCCESS_MESSAGE);
-		userDetailsResponceDto.setStatusCode(HttpStatus.OK.value());
-		BeanUtils.copyProperties(response, userDetailsResponceDto);
-
-		return new ResponseEntity<>(userDetailsResponceDto, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<UserSearchResponseDto> getUsersBySearchValue(
 			@Valid @RequestBody SearchRequestDto searchRequestDto) {

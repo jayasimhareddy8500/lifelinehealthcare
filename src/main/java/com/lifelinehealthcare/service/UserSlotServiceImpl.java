@@ -241,6 +241,8 @@ public class UserSlotServiceImpl implements UserSlotService {
 		log.debug("before updating the slot booking details...");
 		UserSlotBook userSlotBook = isUserSlot.get().getUserSlotBook();
 		BeanUtils.copyProperties(requestDto, userSlotBook);
+		userSlotBook.setPatientName(requestDto.getPatientName());
+		userSlotBook.setPatientPhoneNumber(requestDto.getPatientPhoneNumber());
 		userSlotBookRepository.save(userSlotBook);
 	}
 }

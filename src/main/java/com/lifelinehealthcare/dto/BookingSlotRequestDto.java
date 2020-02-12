@@ -8,7 +8,7 @@ import lombok.Setter;
 public class BookingSlotRequestDto {
 
 	private String patientName;
-	private String patientPhoneNumber;
+	private Long patientPhoneNumber;
 	private String diseaseDetail;
 	private String remarks;
 }

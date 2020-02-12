@@ -26,6 +26,7 @@ public class AppConstant {
 
 	// Booking User Slots
 	public static final String SLOT_CREATED_SCCUESS_MESSAGE = "Slot Created Successfully";
+	public static final String SLOT_BOOKED_SCCUESS_MESSAGE = "Slot Booked Successfully";
 	public static final String INVALID_BOOKING_STATUS_TYPE = "Invalid Booking Status Type.";
 	public static final String ALREADY_SLOT_BOOKED = "Already Slot Booked for this Date and Time";
 	public static final String SLOT_DATE_FROM_TIME_SHOULD_NOT_LESS_1 = "slotTimeFrom can't be less than 1";

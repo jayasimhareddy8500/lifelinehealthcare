@@ -41,21 +41,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetailsResponceDto getUserDetailsById(Integer userId) throws UserNotFoundException {
-		UserDetailsResponceDto userDetailsResponceDto= new UserDetailsResponceDto();
+		UserDetailsResponceDto userDetailsResponceDto = new UserDetailsResponceDto();
 		Optional<User> user = userRepository.findById(userId);
 		if (!user.isPresent()) {
 			throw new UserNotFoundException(AppConstant.USER_NOT_FOUND);
 		}
 		userDetailsResponceDto.setUserId(user.get().getUserId());
 		userDetailsResponceDto.setName(user.get().getName());
-		
+		userDetailsResponceDto.setCategory(user.get().getCategory());
+
 		Optional<UserDetail> userDetail = userDetailRepository.findByUser(user.get());
-		if(!userDetail.isPresent()) {
+		if (!userDetail.isPresent()) {
 			throw new UserNotFoundException(AppConstant.USER_NOT_FOUND);
 		}
-		
-		BeanUtils.copyProperties(userDetail, userDetailsResponceDto);
-		
+
+		BeanUtils.copyProperties(userDetail.get(), userDetailsResponceDto);
+
 		List<UserSlot> userSlots = userSlotRepository.findAllByUserAndStatus(user.get(), BookingStatus.AVAILABLE);
 		List<AvilableSlotDto> availableSlots = userSlots.stream().map(this::convertToAvaialbleSlot)
 				.collect(Collectors.toList());
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
 				searchRequestDto.getCategory());
 		return users.stream().map(this::convertUserToDoctortDto).collect(Collectors.toList());
 	}
-	
+
 	private AvilableSlotDto convertToAvaialbleSlot(UserSlot userSlot) {
 		AvilableSlotDto avilableSlotDto = new AvilableSlotDto();
 		BeanUtils.copyProperties(userSlot, avilableSlotDto);
