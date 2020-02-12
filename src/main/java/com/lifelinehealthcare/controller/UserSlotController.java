@@ -106,7 +106,7 @@ public class UserSlotController {
 	}
 
 	@PostMapping("{userId}/slots/{slotId}")
-	public ResponseEntity<ResponseDto> confirmBooking(@PathVariable Integer userId, @PathVariable Integer slotId,
+	public ResponseEntity<ResponseDto> confirmBookingSlot(@PathVariable Integer userId, @PathVariable Integer slotId,
 			@Valid @RequestBody BookingSlotRequestDto requestDto) throws UserNotFoundException, SlotNotFoundException {
 		log.info("booking the available slot based on the slot ID...");
 		userSlotService.confirmBookingSlot(userId, slotId, requestDto);

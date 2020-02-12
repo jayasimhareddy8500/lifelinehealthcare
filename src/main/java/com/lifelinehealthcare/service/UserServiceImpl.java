@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 		Optional<UserDetail> userDetail = userDetailRepository.findByUser(user.get());
 		if (!userDetail.isPresent()) {
-			throw new UserNotFoundException(AppConstant.USER_NOT_FOUND);
+			throw new UserNotFoundException(AppConstant.USER_DETAIL_NOT_FOUND);
 		}
 
 		BeanUtils.copyProperties(userDetail.get(), userDetailsResponceDto);

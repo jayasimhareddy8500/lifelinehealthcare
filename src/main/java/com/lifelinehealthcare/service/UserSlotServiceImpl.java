@@ -205,15 +205,18 @@ public class UserSlotServiceImpl implements UserSlotService {
 	private List<TimeDto> getTimeSlots(LocalTime startTime, LocalTime endTime, int slotRange) {
 		log.debug("getting the time slots...");
 		List<TimeDto> slots = new ArrayList<>();
-		for (LocalTime time = startTime, nextTime; time.isBefore(endTime); time = nextTime) {
+		
+		while(startTime.isBefore(endTime)) {
 			TimeDto timeDto = new TimeDto();
-			nextTime = time.plusMinutes(slotRange);
+			LocalTime nextTime = startTime.plusMinutes(slotRange);
 			if (nextTime.isAfter(endTime))
 				break;
-			timeDto.setFromTime(time.toString());
+			timeDto.setFromTime(startTime.toString());
 			timeDto.setToTime(nextTime.toString());
 			slots.add(timeDto);
+			startTime = nextTime;
 		}
+		
 		return slots;
 	}
 
