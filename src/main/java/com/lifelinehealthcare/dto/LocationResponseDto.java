@@ -10,6 +10,6 @@ import lombok.Setter;
 public class LocationResponseDto {
 	private Integer statusCode;
 	private String message;
-	private List<LocationDto> LocationDto;
+	private List<LocationDto> locationDto;
 	
 }

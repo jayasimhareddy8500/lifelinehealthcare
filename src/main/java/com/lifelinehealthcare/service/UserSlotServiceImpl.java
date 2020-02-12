@@ -145,7 +145,7 @@ public class UserSlotServiceImpl implements UserSlotService {
 
 		// Check the location is present or not based on the userId.
 		Optional<Location> location = locationRepository.findById(userId);
-		if (!user.isPresent()) {
+		if (!location.isPresent()) {
 			throw new LocationNotFoundException(AppConstant.LOCATION_NOT_FOUND);
 		}
 

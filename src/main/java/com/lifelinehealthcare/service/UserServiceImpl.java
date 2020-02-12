@@ -1,6 +1,5 @@
 package com.lifelinehealthcare.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,7 +14,6 @@ import com.lifelinehealthcare.dto.AvilableSlotDto;
 import com.lifelinehealthcare.dto.DoctorDto;
 import com.lifelinehealthcare.dto.SearchRequestDto;
 import com.lifelinehealthcare.dto.UserDetailsResponceDto;
-import com.lifelinehealthcare.entity.DoctorFeedback;
 import com.lifelinehealthcare.entity.User;
 import com.lifelinehealthcare.entity.UserDetail;
 import com.lifelinehealthcare.entity.UserSlot;
@@ -59,7 +57,7 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(userDetail, userDetailsResponceDto);
 		
 		List<UserSlot> userSlots = userSlotRepository.findAllByUserAndStatus(user.get(), BookingStatus.AVAILABLE);
-		List<AvilableSlotDto> availableSlots = userSlots.stream().map(userSlot ->convertToAvaialbleSlot(userSlot))
+		List<AvilableSlotDto> availableSlots = userSlots.stream().map(this::convertToAvaialbleSlot)
 				.collect(Collectors.toList());
 		userDetailsResponceDto.setAvilableslot(availableSlots);
 		return userDetailsResponceDto;

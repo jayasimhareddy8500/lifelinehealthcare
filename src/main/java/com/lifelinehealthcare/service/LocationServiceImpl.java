@@ -24,10 +24,7 @@ public class LocationServiceImpl implements LocationService {
 
 		List<Location> locationOfList = locationRepository.findAll();
 
-		List<LocationDto> locationDtos = locationOfList.stream().map(this::convertEntityToDto)
-				.collect(Collectors.toList());
-
-		return locationDtos;
+		return locationOfList.stream().map(this::convertEntityToDto).collect(Collectors.toList());
 
 	}
 
