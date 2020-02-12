@@ -2,21 +2,31 @@ package com.lifelinehealthcare.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lifelinehealthcare.common.LifeLineHealthEnum.BookingStatus;
 import com.lifelinehealthcare.constant.AppConstant;
+import com.lifelinehealthcare.dto.BookingSlotRequestDto;
+import com.lifelinehealthcare.dto.ResponseDto;
+import com.lifelinehealthcare.dto.SlotRequestDto;
 import com.lifelinehealthcare.dto.UserSlotDto;
 import com.lifelinehealthcare.dto.UserSlotResponseDto;
+import com.lifelinehealthcare.exception.AlreadySlotBookedException;
 import com.lifelinehealthcare.exception.InvalidBookingStatusException;
+import com.lifelinehealthcare.exception.LocationNotFoundException;
+import com.lifelinehealthcare.exception.SlotNotFoundException;
 import com.lifelinehealthcare.exception.UserNotFoundException;
 import com.lifelinehealthcare.service.UserSlotService;
 
@@ -66,6 +76,43 @@ public class UserSlotController {
 		userSlotResponseDto.setStatusCode(AppConstant.SUCCESS_STATUS_CODE);
 		userSlotResponseDto.setMessage(AppConstant.SUCCESS_MESSAGE);
 		log.info("return the getting the user slots based on the status type...");
-		return new ResponseEntity<UserSlotResponseDto>(userSlotResponseDto, HttpStatus.OK);
+		return new ResponseEntity<>(userSlotResponseDto, HttpStatus.OK);
+	}
+
+	/**
+	 * Create a available slots based on the details as locationId, hospital detail,
+	 * slot date with time
+	 * 
+	 * @param slotRequestDto - details of the slot create such as locationId,
+	 *                       hospital detail, slot date with time
+	 * @return responseDto with the status code and success message;
+	 * @author Govindasamy.C
+	 * @throws UserNotFoundException
+	 * @throws AlreadySlotBookedException
+	 * @throws LocationNotFoundException
+	 * @since 12-02-2020
+	 */
+	@PostMapping("{userId}/slots")
+	public ResponseEntity<ResponseDto> createAvailableSlot(@PathVariable Integer userId,
+			@Valid @RequestBody SlotRequestDto slotRequestDto)
+			throws UserNotFoundException, AlreadySlotBookedException, LocationNotFoundException {
+		log.info("create a avaialble slots based on the slotRequestDto...");
+		userSlotService.createAvailableSlot(userId, slotRequestDto);
+		ResponseDto responseDto = new ResponseDto();
+		responseDto.setMessage(AppConstant.SLOT_CREATED_SCCUESS_MESSAGE);
+		responseDto.setStatusCode(HttpStatus.OK.value());
+		log.info("returning the success code and message in create a avaialble slots...");
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
+	}
+
+	@PostMapping("{userId}/slots/{slotId}")
+	public ResponseEntity<ResponseDto> confirmBooking(@PathVariable Integer userId, @PathVariable Integer slotId,
+			@Valid @RequestBody BookingSlotRequestDto requestDto) throws UserNotFoundException, SlotNotFoundException {
+		log.info("booking the available slot based on the slot ID...");
+		userSlotService.confirmBookingSlot(userId, slotId, requestDto);
+		ResponseDto responseDto = new ResponseDto();
+		responseDto.setStatusCode(HttpStatus.OK.value());
+		responseDto.setMessage(AppConstant.SUCCESS_MESSAGE);
+		return new ResponseEntity<>(responseDto, HttpStatus.OK);
 	}
 }

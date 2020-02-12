@@ -18,7 +18,7 @@ public class LifeLineHealthEnum {
 	 * @since 11-02-2020
 	 */
 	public enum BookingStatus {
-		PENDING, BOOKED;
+		AVAILABLE, BOOKED;
 
 	}
 	

@@ -20,7 +20,6 @@ public class UserDetail {
 	private Integer userDetailId;
 	private String educationQualification;
 	private Double yearsOfExperience;
-	private String category;
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;

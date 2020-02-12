@@ -59,4 +59,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		errorDto.setStatusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
 		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
 	}
+
+	@ExceptionHandler(LocationNotFoundException.class)
+	public ResponseEntity<ResponseDto> locationNotFoundException(LocationNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.LOCATION_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
+	
+	@ExceptionHandler(SlotNotFoundException.class)
+	public ResponseEntity<ResponseDto> slotNotFoundException(SlotNotFoundException ex) {
+		ResponseDto errorDto = new ResponseDto();
+		errorDto.setMessage(AppConstant.SLOT_NOT_FOUND);
+		errorDto.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return ResponseEntity.status(HttpStatus.OK).body(errorDto);
+	}
 }
