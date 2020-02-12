@@ -28,8 +28,8 @@ public class UserSlot {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer userSlotId;
 	private LocalDate slotDate;
-	private Integer slotTimeFrom;
-	private Integer slotTimeTo;
+	private String slotTimeFrom;
+	private String slotTimeTo;
 	private String slotRange;
 	private String hospitalDetail;
 	@Enumerated(EnumType.STRING)

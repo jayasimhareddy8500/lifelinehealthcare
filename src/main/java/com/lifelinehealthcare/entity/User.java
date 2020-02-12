@@ -30,6 +30,7 @@ public class User {
 	private String emailAddress;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	private String category;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "user")
     private UserDetail userDetail;
